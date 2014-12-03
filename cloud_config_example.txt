@@ -1,0 +1,13 @@
+#cloud-config
+# Creates the user 'deploy' with an SSH public key for logging in
+# Adds user 'deploy' as a **PASSWORDLESS** sudoer
+# Disables root login via SSH
+users:
+  - name: deploy
+    ssh-authorized-keys:
+      - PASTE_YOUR_SSH_PUBLIC_KEY_HERE
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    shell: /bin/bash
+runcmd:
+  - sed -i -e '/^PermitRootLogin/s/^.*$/PermitRootLogin no/' /etc/ssh/sshd_config
+  - restart ssh
